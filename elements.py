@@ -20,7 +20,7 @@ class Button:
 
             cls.draw_icon(screen, button, icon)
             output = cls.check_collision_and_draw_border(screen, name, button, mouse_x, mouse_y, mouse_b)
-            if output is not None:return output
+            if output is not None: return output
 
     @classmethod
     def check_collision_and_draw_border(cls, screen, name, button, mouse_x, mouse_y, mouse_b) -> str:
@@ -44,3 +44,22 @@ class Bar:  # Can be used as a nav bar or a side bar
 
     def draw_bar(self, screen):
         draw.rect(screen, Colours.GREY, self.bar)
+
+
+class Canvas:
+    def __init__(self, screen, x, y, length, width):
+        self.initial_frame, self.current_frame = True, None  # Canvas states
+        self.position = Rect(x, y, length, width)
+        self.canvas = screen.subsurface(self.position)
+        self.canvas.fill(Colours.WHITE)
+
+    def draw_canvas(self, screen):
+        draw.rect(screen, Colours.GREY, self.canvas)
+
+    def store_canvas(self):
+        self.current_frame = self.canvas.copy()
+
+    def update_canvas(self, screen):
+        if not self.initial_frame:
+            x, y, _, _ = self.position
+            screen.blit(self.current_frame)

@@ -81,3 +81,4 @@ class Colours:
     GREY = (100, 100, 100)
     RED = (200, 70, 70)
     BLACK = (0, 0, 0)
+    WHITE = (255, 255, 255)
