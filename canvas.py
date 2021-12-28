@@ -1,6 +1,7 @@
 from sys import platform
 from pygame import font, display, FULLSCREEN, mouse, time, event, QUIT
 from elements import Button
+from static import Icons
 
 
 class Canvas:
@@ -16,8 +17,8 @@ class Canvas:
         self.screen.fill((200, 200, 200))
 
         # Test
-        Button("Save", 100, 10)
-        Button("test", 200, 10)
+        Button("pencil", Icons.PENCIL, 100, 10,)
+        Button("brush", Icons.BRUSH, 200, 10)
 
     def event_manager(self):
         self.mouse_x, self.mouse_y = mouse.get_pos()

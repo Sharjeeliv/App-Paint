@@ -23,64 +23,56 @@ TIPS = [
 STD_WIDTH = 4
 
 
-
-"""class Icons:
-    TITLE = transform.rotate(transform.scale(image.load("Images/side_icons/Title.png"), (200, 50)), 270)
+class Icons:
+    # TITLE = transform.rotate(transform.scale(image.load("static/side_icons/title.png"), (200, 50)), 270)
 
     # Side Menu Button Icons
     # ---------------------------------------------------------
-    COLOUR = transform.scale(image.load("Images/side_icons/Colour.png"), (64, 64))
-    OPACITY = transform.scale(image.load("Images/side_icons/Opacity.png"), (64, 64))
-    WIDTH = transform.scale(image.load("Images/side_icons/Width.png"), (64, 64))
-    SAVE = transform.scale(image.load("Images/side_icons/Save.png"), (32, 32))
-    LOAD = transform.scale(image.load("Images/side_icons/Load.png"), (32, 32))
+    COLOUR = transform.scale(image.load("static/side_icons/colour.png"), (64, 64))
+    OPACITY = transform.scale(image.load("static/side_icons/opacity.png"), (64, 64))
+    WIDTH = transform.scale(image.load("static/side_icons/width.png"), (64, 64))
+    SAVE = transform.scale(image.load("static/side_icons/save.png"), (32, 32))
+    LOAD = transform.scale(image.load("static/side_icons/load.png"), (32, 32))
 
-    RED_SLIDER = transform.scale(image.load("Images/side_icons/ColourSliders/RSlider.png"), (20, 255))
-    GREEN_SLIDER = transform.scale(image.load("Images/side_icons/ColourSliders/GSlider.png"), (20, 255))
-    BLUE_SLIDER = transform.scale(image.load("Images/side_icons/ColourSliders/BSlider.png"), (20, 255))
-    CHECK_MARK = transform.scale(image.load("Images/Shapes/CheckMark.png"), (16, 16))
+    RED_SLIDER = transform.scale(image.load("static/side_icons/slider_red.png"), (20, 255))
+    GREEN_SLIDER = transform.scale(image.load("static/side_icons/slider_green.png"), (20, 255))
+    BLUE_SLIDER = transform.scale(image.load("static/side_icons/slider_blue.png"), (20, 255))
+    CHECK_MARK = transform.scale(image.load("static/icons/check_mark.png"), (16, 16))
 
-    # Draw Menu Button Icons
+    # Navigation Bar Button Icons
     # ---------------------------------------------------------
-    DRAW = transform.scale(image.load("Images/Drawing/Drawing.png"), (64, 64))
-    FOUNT_PEN = transform.scale(image.load("Images/Drawing/FountainPen.png"), (64, 64))
-    MARKER = transform.scale(image.load("Images/Drawing/Marker.png"), (64, 64))
-    PENCIL = transform.scale(image.load("Images/Drawing/Pencil.png"), (64, 64))
+    DRAW = transform.scale(image.load("static/nav_bar_icons/drawing.png"), (64, 64))
+    PAINT = transform.scale(image.load("static/nav_bar_icons/painting.png"), (64, 64))
+    ERASE = transform.scale(image.load("static/nav_bar_icons/erasing.png"), (64, 64))
+    SHAPES = transform.scale(image.load("static/nav_bar_icons/shapes.png"), (64, 64))
+    STAMP = transform.scale(image.load("static/nav_bar_icons/stamps.png"), (64, 64))
+    SETTINGS = transform.scale(image.load("static/nav_bar_icons/settings.png"), (64, 64))
 
-    # Paint Menu Button Icons
+    # Tool Button Icons
     # ---------------------------------------------------------
-    PAINT = transform.scale(image.load("Images/Painting/Painting.png"), (64, 64))
-    BRUSH = transform.scale(image.load("Images/Painting/PaintBrush.png"), (64, 64))
-    SPRAY = transform.scale(image.load("Images/Painting/SprayPaint.png"), (64, 64))
+    FOUNT_PEN = transform.scale(image.load("static/icons/fountain_pen.png"), (64, 64))
+    MARKER = transform.scale(image.load("static/icons/marker.png"), (64, 64))
+    PENCIL = transform.scale(image.load("static/icons/pencil.png"), (64, 64))
 
-    # Erase Menu Button Icons
-    # ---------------------------------------------------------
-    ERASE = transform.scale(image.load("Images/Erasing/EraserFamily.png"), (64, 64))
-    ERASER = transform.scale(image.load("Images/Erasing/Eraser.png"), (64, 64))
-    CLEAR = transform.scale(image.load("Images/Erasing/Clear.png"), (64, 64))
+    BRUSH = transform.scale(image.load("static/icons/paint_brush.png"), (64, 64))
+    SPRAY = transform.scale(image.load("static/icons/spray_paint.png"), (64, 64))
 
-    # Shapes Menu Button Icons
-    # ---------------------------------------------------------
-    SHAPES = transform.scale(image.load("Images/Shapes/Shapes.png"), (64, 64))
-    CIRCLE = transform.scale(image.load("Images/Shapes/Circle.png"), (64, 64))
-    SQUARE = transform.scale(image.load("Images/Shapes/Square.png"), (64, 64))
-    LINE = transform.scale(image.load("Images/Shapes/Line.png"), (64, 64))
-    ELLIPSE = transform.scale(image.load("Images/Shapes/Ellipse.png"), (64, 64))
+    ERASER = transform.scale(image.load("static/icons/eraser.png"), (64, 64))
+    CLEAR = transform.scale(image.load("static/icons/clear.png"), (64, 64))
 
-    # Stamp Menu Button Icons
-    # ---------------------------------------------------------
-    STAMP = transform.scale(image.load("Images/Stamps/Stamps.png"), (64, 64))
-    STAMP_1 = transform.scale(image.load("Images/Stamps/Sun.png"), (64, 64))
-    STAMP_2 = transform.scale(image.load("Images/Stamps/Cloud.png"), (64, 64))
-    STAMP_3 = transform.scale(image.load("Images/Stamps/Rain.png"), (64, 64))
-    STAMP_4 = transform.scale(image.load("Images/Stamps/Mountain.png"), (64, 64))
-    STAMP_5 = transform.scale(image.load("Images/Stamps/Grass.png"), (64, 64))
-    STAMP_6 = transform.scale(image.load("Images/Stamps/Trees.png"), (64, 64))
+    CIRCLE = transform.scale(image.load("static/icons/circle.png"), (64, 64))
+    SQUARE = transform.scale(image.load("static/icons/square.png"), (64, 64))
+    LINE = transform.scale(image.load("static/icons/line.png"), (64, 64))
+    ELLIPSE = transform.scale(image.load("static/icons/ellipse.png"), (64, 64))
 
-    # Settings Menu Button Icons
-    # ---------------------------------------------------------
-    SETTINGS = transform.scale(image.load("Images/Settings/Settings.png"), (64, 64))
-    EXIT = transform.scale(image.load("Images/Settings/ForceExit.png"), (64, 64))"""
+    STAMP_1 = transform.scale(image.load("static/icons/stamp_sun.png"), (64, 64))
+    STAMP_2 = transform.scale(image.load("static/icons/stamp_cloud.png"), (64, 64))
+    STAMP_3 = transform.scale(image.load("static/icons/stamp_rain.png"), (64, 64))
+    STAMP_4 = transform.scale(image.load("static/icons/stamp_mountain.png"), (64, 64))
+    STAMP_5 = transform.scale(image.load("static/icons/stamp_grass.png"), (64, 64))
+    STAMP_6 = transform.scale(image.load("static/icons/stamp_trees.png"), (64, 64))
+
+    EXIT = transform.scale(image.load("static/icons/force_exit.png"), (64, 64))
 
 
 class Colours:
