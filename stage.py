@@ -2,6 +2,12 @@ from pygame import font, display, mouse, time, event, QUIT
 from elements import Button, Canvas
 from static import Icons, Colours
 
+'''
+The stage module is responsible for "staging" the app/game and hence is usually
+present in all programs. It's primary responsibilities are to control the flow,
+initialize, and layout the gui.
+'''
+
 
 class Stage:
     def __init__(self):
@@ -20,7 +26,7 @@ class Stage:
         Button("pencil", Icons.PENCIL, 100, 10)
         Button("brush", Icons.BRUSH, 200, 10)
 
-        self.canvas = Canvas(self.screen, 10, 110, 200, 200)
+        self.canvas = Canvas(self.screen, 10, 110, 500, 200)
 
     def static_layout(self):
         pass
@@ -31,6 +37,9 @@ class Stage:
     def event_manager(self):
         self.mouse_x, self.mouse_y = mouse.get_pos()
         self.mouse_b = mouse.get_pressed()
+
+        self.canvas.store_canvas()
+        self.canvas.update_canvas(self.screen)
 
         tool = Button.manager(self.screen, self.mouse_x, self.mouse_y, self.mouse_b)
 
