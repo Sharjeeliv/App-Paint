@@ -1,5 +1,5 @@
-from canvas import Canvas
+from stage import Stage
 
 if __name__ == '__main__':
-    app = Canvas()
+    app = Stage()
     app.run()

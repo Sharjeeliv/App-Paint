@@ -1,6 +1,8 @@
 from pygame import image, transform
 
 # General Constants
+STD_WIDTH = 4
+STD_BUTTON_SIZE = 80
 TIPS = [
     "Left click to draw.",
     "Left click to erase.",
@@ -20,7 +22,6 @@ TIPS = [
     "Left click to set current color as point 2 color.",
     "Click the checkbox on the right to toggle fill.",
 ]
-STD_WIDTH = 4
 
 
 class Icons:
@@ -76,7 +77,7 @@ class Icons:
 
 
 class Colours:
-    LIGHT_GRAY = (220, 220, 220)
-    BORDER = (100, 100, 100)
-    HIGHLIGHT = (200, 70, 70)
-    PRESS = (0, 0, 0)
+    LIGHT_GREY = (220, 220, 220)
+    GREY = (100, 100, 100)
+    RED = (200, 70, 70)
+    BLACK = (0, 0, 0)
