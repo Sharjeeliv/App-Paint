@@ -4,40 +4,42 @@ from colours import *
 
 
 class Button:
-    buttons = []  # All the buttons created are stored here
-    option = None
+    __buttons = []  # All the buttons created are stored here
+    __option = None
 
     def __init__(self, name, icon, x, y, length=STD_BUTTON_SIZE, width=STD_BUTTON_SIZE):
         self.name = name
         self.button = Rect(x, y, length, width)
         self.icon = icon
-        Button.buttons.append(self)
+        Button.__buttons.append(self)
 
     @classmethod
-    def group_member(cls, button):
+    def __group_member(cls, button):
         name = getattr(button, 'name').split(":")
-        if name[1] == cls.option or name[0] == cls.option:
+        if name[1] == cls.__option or name[0] == cls.__option:
             return True
         return False
 
     @classmethod
     def manager(cls, screen, option, mouse_x, mouse_y, mouse_b) -> str:
-        cls.option = option
-        group = list(filter(cls.group_member, cls.buttons))
+        cls.__option = option
+        group = list(filter(cls.__group_member, cls.__buttons))
 
+        # Refresh buttons
         for button in group:
-            cls.draw_icon(screen, button)
-            cls.draw_border(screen, button, mouse_x, mouse_y, mouse_b)
+            cls.__draw_icon(screen, button)
+            cls.__draw_border(screen, button, mouse_x, mouse_y, mouse_b)
 
+        # Detect a button press
         for button in group:
             name = getattr(button, 'name').split(":")
-            output = cls.check_press(name[1], button, mouse_x, mouse_y, mouse_b)
+            output = cls.__check_press(name[1], button, mouse_x, mouse_y, mouse_b)
             if output is not None:
                 output = "option:" + output if name[0] == "option" else output
                 return output
 
     @classmethod
-    def draw_border(cls, screen, button, mouse_x, mouse_y, mouse_b, ):
+    def __draw_border(cls, screen, button, mouse_x, mouse_y, mouse_b, ):
         button = getattr(button, 'button')
         if button.collidepoint(mouse_x, mouse_y) and mouse_b[0] == 1:
             draw.rect(screen, BLACK, button, STD_WIDTH)
@@ -47,13 +49,13 @@ class Button:
             draw.rect(screen, DARK_GREY, button, STD_WIDTH)
 
     @classmethod
-    def check_press(cls, name, button, mouse_x, mouse_y, mouse_b) -> str:
+    def __check_press(cls, name, button, mouse_x, mouse_y, mouse_b) -> str:
         button = getattr(button, 'button')
         if button.collidepoint(mouse_x, mouse_y) and mouse_b[0] == 1:
             return name
 
     @classmethod
-    def draw_icon(cls, screen, button):
+    def __draw_icon(cls, screen, button):
         icon = getattr(button, 'icon')
         button = getattr(button, 'button')
         x, y, l, w = button  # Decompose button and apply offset
@@ -97,22 +99,3 @@ class DropMenu:
     @classmethod
     def draw_menu_collision(cls):
         pass
-
-
-def decorator_function(input_function):
-    for i in Button.buttons:
-        menu_flag = False
-        button = getattr(i, 'button')
-        name = getattr(i, 'name').split(":")
-        icon = getattr(i, 'icon')
-
-        if name[1] == Button.option:
-            menu_flag = True
-            pass
-        elif name[0] != Button.option:
-            continue
-
-        def wrapper_function(*args, **kwargs):
-            input_function(*args, **kwargs)
-
-        return wrapper_function
