@@ -99,7 +99,7 @@ class Stage:
     def run(self):
         while self.run_program:
             # --------------------------
-            # self.static_layout()
+            self.static_layout()
             self.event_manager()
 
             # --------------------------

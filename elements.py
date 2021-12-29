@@ -13,6 +13,12 @@ class Button:
         Button.buttons.append(self)
 
     @classmethod
+    def decorator_function(cls, input_function):
+        def wrapper_function(*args, **kwargs):
+            return input_function(*args, **kwargs)
+        return wrapper_function()
+
+    @classmethod
     def manager(cls, screen, option, mouse_x, mouse_y, mouse_b) -> str or None:
         for i in cls.buttons:  # Iterate through all buttons once
             menu_flag = False
@@ -28,21 +34,39 @@ class Button:
                 continue
 
             cls.draw_icon(screen, button, icon)
-            output = cls.check_collision_and_draw_border(screen, name[1], button, mouse_x, mouse_y, mouse_b)
+            cls.draw_border(screen, button, mouse_x, mouse_y, mouse_b)
+
+        for i in cls.buttons:  # Iterate through all buttons once
+            menu_flag = False
+            button = getattr(i, 'button')
+            name = getattr(i, 'name').split(":")
+
+            # Special handling for an option button that bypassing normal button handling
+            if name[1] == option:
+                menu_flag = True
+                pass
+            elif name[0] != option:
+                continue
+
+            output = cls.check_press(name[1], button, mouse_x, mouse_y, mouse_b)
             if output is not None:
                 output = "option:" + output if menu_flag else output
+                print(output)
                 return output
-        return None
 
     @classmethod
-    def check_collision_and_draw_border(cls, screen, name, button, mouse_x, mouse_y, mouse_b) -> str:
+    def draw_border(cls, screen, button, mouse_x, mouse_y, mouse_b):
         if button.collidepoint(mouse_x, mouse_y) and mouse_b[0] == 1:
             draw.rect(screen, BLACK, button, STD_WIDTH)
-            return name
         elif button.collidepoint(mouse_x, mouse_y):
             draw.rect(screen, DULL_RED, button, STD_WIDTH)
         else:
             draw.rect(screen, DARK_GREY, button, STD_WIDTH)
+
+    @classmethod
+    def check_press(cls, name, button, mouse_x, mouse_y, mouse_b) -> str:
+        if button.collidepoint(mouse_x, mouse_y) and mouse_b[0] == 1:
+            return name
 
     @classmethod
     def draw_icon(cls, screen, button, icon):
