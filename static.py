@@ -2,6 +2,7 @@ from pygame import image, transform
 
 # General Constants
 STD_WIDTH = 4
+STD_BORDER = 10
 STD_BUTTON_SIZE = 80
 TIPS = [
     "Left click to draw.",
@@ -46,7 +47,7 @@ class Icons:
     PAINT = transform.scale(image.load("static/nav_bar_icons/painting.png"), (64, 64))
     ERASE = transform.scale(image.load("static/nav_bar_icons/erasing.png"), (64, 64))
     SHAPES = transform.scale(image.load("static/nav_bar_icons/shapes.png"), (64, 64))
-    STAMP = transform.scale(image.load("static/nav_bar_icons/stamps.png"), (64, 64))
+    STAMPS = transform.scale(image.load("static/nav_bar_icons/stamps.png"), (64, 64))
     SETTINGS = transform.scale(image.load("static/nav_bar_icons/settings.png"), (64, 64))
 
     # Tool Button Icons
@@ -74,11 +75,3 @@ class Icons:
     STAMP_6 = transform.scale(image.load("static/icons/stamp_trees.png"), (64, 64))
 
     EXIT = transform.scale(image.load("static/icons/force_exit.png"), (64, 64))
-
-
-class Colours:
-    LIGHT_GREY = (220, 220, 220)
-    GREY = (100, 100, 100)
-    RED = (200, 70, 70)
-    BLACK = (0, 0, 0)
-    WHITE = (255, 255, 255)
