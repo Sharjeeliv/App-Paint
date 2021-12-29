@@ -1,5 +1,5 @@
 from pygame import font, display, mouse, time, event, QUIT
-from elements import Button, Canvas, Bar
+from elements import Button, Canvas, Bar, DropMenu
 from static import Icons
 from colours import *
 
@@ -17,6 +17,7 @@ class Stage:
         self.mouse_x, self.mouse_y, self.mouse_b = 0, 0, 0
         self.WINDOW_LENGTH, self.WINDOW_WIDTH = 1280, 720
         self.run_program = True
+        self.next_option = None
 
         # Initialize font
         font.init()
@@ -28,22 +29,11 @@ class Stage:
 
         # Program setup
         self.current_option = 'draw'
+        self.drop_menu = DropMenu(10, 10, 80, 630)
         self.static_layout()
+        self.initial_layout()
 
-    def static_layout(self): # Used for init as well
-
-        # Back screen & Canvas
-        self.screen.fill(DARK_GREY)
-        self.canvas = Canvas(self.screen, 10, 110, self.WINDOW_LENGTH - 80, self.WINDOW_WIDTH - 110)
-
-        # Bar Elements
-        top_bar = Bar(self.WINDOW_LENGTH, 100)
-        side_bar = Bar(100, self.WINDOW_WIDTH, self.WINDOW_LENGTH - 60)
-        top_bar.draw_bar(self.screen)
-        side_bar.draw_bar(self.screen)
-
-        # Test
-
+    def initial_layout(self):
         Button("option:draw", Icons.DRAW, 10, 10)
         Button("draw:pencil", Icons.PENCIL, 100, 10)
         Button("draw:marker", Icons.MARKER, 190, 10)
@@ -73,8 +63,23 @@ class Stage:
         Button("option:settings", Icons.SETTINGS, 10, 10)
         Button("option:exit", Icons.EXIT, 100, 10)
 
-    def dynamic_layout(self):
-        pass
+    def static_layout(self):  # Used for init as well
+
+        # Back screen & Canvas
+        self.screen.fill(DARK_GREY)
+        self.canvas = Canvas(self.screen, 10, 110, self.WINDOW_LENGTH - 80, self.WINDOW_WIDTH - 110)
+
+        # Bar Elements
+        top_bar = Bar(self.WINDOW_LENGTH, 100)
+        top_bar.draw_bar(self.screen)
+        side_bar = Bar(100, self.WINDOW_WIDTH, self.WINDOW_LENGTH - 60)
+        side_bar.draw_bar(self.screen)
+
+    def dynamic_layout(self, option):
+        if option is not None:
+            option = option.split(":")
+            if option[0] == "option":
+                self.drop_menu.draw_drop_menu(self.screen)
 
     def event_manager(self):
         self.mouse_x, self.mouse_y = mouse.get_pos()
@@ -83,7 +88,9 @@ class Stage:
         self.canvas.store_canvas()
         self.canvas.update_canvas(self.screen)
 
-        tool = Button.manager(self.screen, self.current_option, self.mouse_x, self.mouse_y, self.mouse_b)
+        self.next_option = Button.manager(self.screen, self.current_option, self.mouse_x, self.mouse_y, self.mouse_b)
+
+        self.dynamic_layout(self.next_option)
 
         for evt in event.get():
             if evt.type == QUIT:
@@ -92,6 +99,7 @@ class Stage:
     def run(self):
         while self.run_program:
             # --------------------------
+            # self.static_layout()
             self.event_manager()
 
             # --------------------------
