@@ -5,6 +5,7 @@ from colours import *
 
 class Button:
     buttons = []  # All the buttons created are stored here
+    option = None
 
     def __init__(self, name, icon, x, y, length=STD_BUTTON_SIZE, width=STD_BUTTON_SIZE):
         self.name = name
@@ -13,49 +14,31 @@ class Button:
         Button.buttons.append(self)
 
     @classmethod
-    def decorator_function(cls, input_function):
-        def wrapper_function(*args, **kwargs):
-            return input_function(*args, **kwargs)
-        return wrapper_function()
+    def group_member(cls, button):
+        name = getattr(button, 'name').split(":")
+        if name[1] == cls.option or name[0] == cls.option:
+            return True
+        return False
 
     @classmethod
-    def manager(cls, screen, option, mouse_x, mouse_y, mouse_b) -> str or None:
-        for i in cls.buttons:  # Iterate through all buttons once
-            menu_flag = False
-            button = getattr(i, 'button')
-            name = getattr(i, 'name').split(":")
-            icon = getattr(i, 'icon')
+    def manager(cls, screen, option, mouse_x, mouse_y, mouse_b) -> str:
+        cls.option = option
+        group = list(filter(cls.group_member, cls.buttons))
 
-            # Special handling for an option button that bypassing normal button handling
-            if name[1] == option:
-                menu_flag = True
-                pass
-            elif name[0] != option:
-                continue
-
-            cls.draw_icon(screen, button, icon)
+        for button in group:
+            cls.draw_icon(screen, button)
             cls.draw_border(screen, button, mouse_x, mouse_y, mouse_b)
 
-        for i in cls.buttons:  # Iterate through all buttons once
-            menu_flag = False
-            button = getattr(i, 'button')
-            name = getattr(i, 'name').split(":")
-
-            # Special handling for an option button that bypassing normal button handling
-            if name[1] == option:
-                menu_flag = True
-                pass
-            elif name[0] != option:
-                continue
-
+        for button in group:
+            name = getattr(button, 'name').split(":")
             output = cls.check_press(name[1], button, mouse_x, mouse_y, mouse_b)
             if output is not None:
-                output = "option:" + output if menu_flag else output
-                print(output)
+                output = "option:" + output if name[0] == "option" else output
                 return output
 
     @classmethod
-    def draw_border(cls, screen, button, mouse_x, mouse_y, mouse_b):
+    def draw_border(cls, screen, button, mouse_x, mouse_y, mouse_b, ):
+        button = getattr(button, 'button')
         if button.collidepoint(mouse_x, mouse_y) and mouse_b[0] == 1:
             draw.rect(screen, BLACK, button, STD_WIDTH)
         elif button.collidepoint(mouse_x, mouse_y):
@@ -65,11 +48,14 @@ class Button:
 
     @classmethod
     def check_press(cls, name, button, mouse_x, mouse_y, mouse_b) -> str:
+        button = getattr(button, 'button')
         if button.collidepoint(mouse_x, mouse_y) and mouse_b[0] == 1:
             return name
 
     @classmethod
-    def draw_icon(cls, screen, button, icon):
+    def draw_icon(cls, screen, button):
+        icon = getattr(button, 'icon')
+        button = getattr(button, 'button')
         x, y, l, w = button  # Decompose button and apply offset
         screen.blit(icon, (x + STD_WIDTH * 2, y + STD_WIDTH * 2, l, w))
 
@@ -111,3 +97,22 @@ class DropMenu:
     @classmethod
     def draw_menu_collision(cls):
         pass
+
+
+def decorator_function(input_function):
+    for i in Button.buttons:
+        menu_flag = False
+        button = getattr(i, 'button')
+        name = getattr(i, 'name').split(":")
+        icon = getattr(i, 'icon')
+
+        if name[1] == Button.option:
+            menu_flag = True
+            pass
+        elif name[0] != Button.option:
+            continue
+
+        def wrapper_function(*args, **kwargs):
+            input_function(*args, **kwargs)
+
+        return wrapper_function
