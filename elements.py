@@ -32,10 +32,9 @@ class Button:
 
         # Detect a button press
         for button in group:
-            name = getattr(button, 'name').split(":")
-            output = cls.__check_press(name[1], button, mouse_x, mouse_y, mouse_b)
+            name = getattr(button, 'name')
+            output = cls.__check_press(name, button, mouse_x, mouse_y, mouse_b)
             if output is not None:
-                output = "option:" + output if name[0] == "option" else output
                 return output
 
     @classmethod
@@ -97,5 +96,6 @@ class DropMenu:
         draw.rect(screen, GREY, cls.menu)
 
     @classmethod
-    def draw_menu_collision(cls):
-        pass
+    def draw_menu_collision(cls, mouse_x, mouse_y):
+        if cls.menu.collidepoint(mouse_x, mouse_y):
+            return True

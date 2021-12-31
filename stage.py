@@ -13,11 +13,12 @@ initialize, and layout the gui.
 class Stage:
     def __init__(self):
         # Initialize variables
-        self.canvas = None
         self.mouse_x, self.mouse_y, self.mouse_b = 0, 0, 0
         self.WINDOW_LENGTH, self.WINDOW_WIDTH = 1280, 720
         self.run_program = True
-        self.next_option = None
+
+        # Program state variables
+        self.group, self.option, self.canvas = "draw", None, None
 
         # Initialize font
         font.init()
@@ -28,12 +29,12 @@ class Stage:
         self.screen = display.set_mode((self.WINDOW_LENGTH, self.WINDOW_WIDTH))
 
         # Program setup
-        self.current_option = 'draw'
         self.drop_menu = DropMenu(10, 10, 80, 630)
         self.static_layout()
         self.initial_layout()
 
-    def initial_layout(self):
+    @staticmethod
+    def initial_layout():
         Button("option:draw", Icons.DRAW, 10, 10)
         Button("draw:pencil", Icons.PENCIL, 100, 10)
         Button("draw:marker", Icons.MARKER, 190, 10)
@@ -64,7 +65,6 @@ class Stage:
         Button("option:exit", Icons.EXIT, 100, 10)
 
     def static_layout(self):  # Used for init as well
-
         # Back screen & Canvas
         self.screen.fill(DARK_GREY)
         self.canvas = Canvas(self.screen, 10, 110, self.WINDOW_LENGTH - 80, self.WINDOW_WIDTH - 110)
@@ -75,23 +75,40 @@ class Stage:
         side_bar = Bar(100, self.WINDOW_WIDTH, self.WINDOW_LENGTH - 60)
         side_bar.draw_bar(self.screen)
 
-    def dynamic_layout(self, option):
-        if option is not None:
-            option = option.split(":")
-            if option[0] == "option":
+    def dynamic_layout(self):  # This manages the option drop down refresh
+        if self.option is not None:
+            if self.option == "option" and self.drop_menu.draw_menu_collision(self.mouse_x, self.mouse_y):
                 self.drop_menu.draw_drop_menu(self.screen)
+            elif not self.drop_menu.draw_menu_collision(self.mouse_x, self.mouse_y):
+                self.option = None
+
+    def update_group_and_option(self, input_option):
+        if input_option is not None:
+            input_option = input_option.split(":")
+            group = input_option[0]
+            option = input_option[1]
+            if group == "option":
+                self.group = option
+                self.option = group  # The tool we use is the option
+            else:
+                self.option = option
 
     def event_manager(self):
+        # Refresh mouse information
         self.mouse_x, self.mouse_y = mouse.get_pos()
         self.mouse_b = mouse.get_pressed()
 
+        # Refresh canvas information
         self.canvas.store_canvas()
         self.canvas.update_canvas(self.screen)
 
-        self.next_option = Button.manager(self.screen, self.current_option, self.mouse_x, self.mouse_y, self.mouse_b)
+        # Button event
+        input_option = Button.manager(self.screen, self.group, self.mouse_x, self.mouse_y, self.mouse_b)
+        self.update_group_and_option(input_option)
 
-        self.dynamic_layout(self.next_option)
+        self.dynamic_layout()
 
+        # Event interruptions
         for evt in event.get():
             if evt.type == QUIT:
                 self.run_program = False
@@ -103,7 +120,7 @@ class Stage:
             self.event_manager()
 
             # --------------------------
-            time.delay(16)
+            time.delay(16)  # ~ 60FPS
             display.flip()
         font.quit()
         del self.program_font
