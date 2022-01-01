@@ -93,13 +93,15 @@ class Stage:
                 temp = self.drop_menu.draw_drop_menu(self.screen, self.mouse_x, self.mouse_y, self.mouse_b)
                 self.update_group_and_option(temp)
             elif not self.drop_menu.draw_menu_collision(self.mouse_x, self.mouse_y):
-                self.option = None
+                if self.option == "option":
+                    self.option = None
 
     def update_group_and_option(self, input_package):
         if input_package is not None:
             input_option = input_package.split(":")
             group = input_option[0]
             option = input_option[1]
+
             if group == "option":
                 self.group = option
                 self.option = group  # The tool we use is the option
@@ -107,6 +109,7 @@ class Stage:
                     Button.update_icon(self.group)
             else:
                 self.option = option
+        # print("option is ", self.option)
 
     def event_manager(self):
         # Refresh mouse information
