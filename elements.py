@@ -16,7 +16,7 @@ class Button:
     @classmethod
     def __group_member(cls, button):
         name = getattr(button, 'name').split(":")
-        if name[1] == cls.__option or name[0] == cls.__option:
+        if name[0] == cls.__option or name[1] == "general":
             return True
         return False
 
@@ -92,8 +92,11 @@ class DropMenu:
         DropMenu.menu = Rect(x, y, length, width)
 
     @classmethod
-    def draw_drop_menu(cls, screen):
+    def draw_drop_menu(cls, screen, mouse_x, mouse_y, mouse_b):
         draw.rect(screen, GREY, cls.menu)
+        temp = Button.manager(screen, "option", mouse_x, mouse_y, mouse_b)
+        if temp is not None:
+            return temp
 
     @classmethod
     def draw_menu_collision(cls, mouse_x, mouse_y):

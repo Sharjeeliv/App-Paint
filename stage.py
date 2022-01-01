@@ -29,40 +29,43 @@ class Stage:
         self.screen = display.set_mode((self.WINDOW_LENGTH, self.WINDOW_WIDTH))
 
         # Program setup
-        self.drop_menu = DropMenu(10, 10, 80, 630)
+        self.drop_menu = DropMenu(5, 5, 90, 630)
         self.static_layout()
         self.initial_layout()
 
     @staticmethod
     def initial_layout():
-        Button("option:draw", Icons.DRAW, 10, 10)
+        Button("option:general", Icons.DRAW, 10, 10)
+
         Button("draw:pencil", Icons.PENCIL, 100, 10)
         Button("draw:marker", Icons.MARKER, 190, 10)
         Button("draw:fount_pen", Icons.FOUNT_PEN, 280, 10)
 
-        Button("option:paint", Icons.DRAW, 10, 10)
         Button("paint:brush", Icons.BRUSH, 100, 10)
         Button("paint:spray", Icons.SPRAY, 190, 10)
 
-        Button("option:erase", Icons.ERASE, 10, 10)
         Button("erase:eraser", Icons.ERASER, 100, 10)
         Button("erase:clear", Icons.CLEAR, 190, 10)
 
-        Button("option:shapes", Icons.SHAPES, 10, 10)
         Button("shapes:circle", Icons.CIRCLE, 100, 10)
         Button("shapes:square", Icons.SQUARE, 190, 10)
         Button("shapes:line", Icons.LINE, 280, 10)
         Button("shapes:ellipse", Icons.ELLIPSE, 370, 10)
 
-        Button("option:stamps", Icons.STAMPS, 10, 10)
-        Button("option:stamp_1", Icons.STAMP_1, 100, 10)
-        Button("option:stamp_2", Icons.STAMP_2, 190, 10)
-        Button("option:stamp_3", Icons.STAMP_3, 280, 10)
-        Button("option:stamp_4", Icons.STAMP_4, 370, 10)
-        Button("option:stamp_6", Icons.STAMP_6, 460, 10)
+        Button("stamps:stamp_1", Icons.STAMP_1, 100, 10)
+        Button("stamps:stamp_2", Icons.STAMP_2, 190, 10)
+        Button("stamps:stamp_3", Icons.STAMP_3, 280, 10)
+        Button("stamps:stamp_4", Icons.STAMP_4, 370, 10)
+        Button("stamps:stamp_6", Icons.STAMP_6, 460, 10)
 
-        Button("option:settings", Icons.SETTINGS, 10, 10)
-        Button("option:exit", Icons.EXIT, 100, 10)
+        Button("settings:exit", Icons.EXIT, 100, 10)
+
+        Button("option:draw", Icons.DRAW, 10, 100)
+        Button("option:paint", Icons.PAINT, 10, 190)
+        Button("option:erase", Icons.ERASE, 10, 280)
+        Button("option:shapes", Icons.SHAPES, 10, 370)
+        Button("option:stamps", Icons.STAMPS, 10, 460)
+        Button("option:settings", Icons.SETTINGS, 10, 550)
 
     def static_layout(self):  # Used for init as well
         # Back screen & Canvas
@@ -75,16 +78,17 @@ class Stage:
         side_bar = Bar(100, self.WINDOW_WIDTH, self.WINDOW_LENGTH - 60)
         side_bar.draw_bar(self.screen)
 
-    def dynamic_layout(self):  # This manages the option drop down refresh
+    def dynamic_layout(self):  # This manages the option dropdown refresh
         if self.option is not None:
             if self.option == "option" and self.drop_menu.draw_menu_collision(self.mouse_x, self.mouse_y):
-                self.drop_menu.draw_drop_menu(self.screen)
+                temp = self.drop_menu.draw_drop_menu(self.screen, self.mouse_x, self.mouse_y, self.mouse_b)
+                self.update_group_and_option(temp)
             elif not self.drop_menu.draw_menu_collision(self.mouse_x, self.mouse_y):
                 self.option = None
 
-    def update_group_and_option(self, input_option):
-        if input_option is not None:
-            input_option = input_option.split(":")
+    def update_group_and_option(self, input_package):
+        if input_package is not None:
+            input_option = input_package.split(":")
             group = input_option[0]
             option = input_option[1]
             if group == "option":
@@ -103,8 +107,8 @@ class Stage:
         self.canvas.update_canvas(self.screen)
 
         # Button event
-        input_option = Button.manager(self.screen, self.group, self.mouse_x, self.mouse_y, self.mouse_b)
-        self.update_group_and_option(input_option)
+        received_package = Button.manager(self.screen, self.group, self.mouse_x, self.mouse_y, self.mouse_b)
+        self.update_group_and_option(received_package)
 
         self.dynamic_layout()
 
@@ -120,7 +124,7 @@ class Stage:
             self.event_manager()
 
             # --------------------------
-            time.delay(16)  # ~ 60FPS
+            time.delay(16)
             display.flip()
         font.quit()
         del self.program_font
