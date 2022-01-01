@@ -1,4 +1,5 @@
 from pygame import draw, Rect
+import static
 from static import *
 from colours import *
 
@@ -16,9 +17,18 @@ class Button:
     @classmethod
     def __group_member(cls, button):
         name = getattr(button, 'name').split(":")
-        if name[0] == cls.__option or name[1] == "general":
+        if name[0] == cls.__option or name[1] == "general" or name[0] == "static":
             return True
         return False
+
+    @classmethod
+    def update_icon(cls, icon):
+        for button in cls.__buttons:
+            name = getattr(button, 'name')
+            if name == "option:general" and icon != "general":
+                temp = str(icon).upper()
+                temp = getattr(static, temp)
+                setattr(button, "icon", temp)
 
     @classmethod
     def manager(cls, screen, option, mouse_x, mouse_y, mouse_b) -> str:
