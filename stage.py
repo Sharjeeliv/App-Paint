@@ -10,6 +10,7 @@ initialize, and layout the gui.
 '''
 
 
+
 class Stage:
     def __init__(self):
         # Initialize variables
