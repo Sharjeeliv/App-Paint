@@ -1,4 +1,4 @@
-class Tools:  # The actual tools such as pen, pencil, paint, etc
+class Tools:  # The actual tools such as pen, pencil, app, etc
 
     @classmethod
     def pencil(cls):

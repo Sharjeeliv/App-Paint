@@ -1,4 +1,4 @@
-from stage import Stage
+from app.stage import Stage
 
 
 def main():
