@@ -1,10 +1,10 @@
-from pygame import font, display, time, event, QUIT
-from .elements import Button, DropMenu
-from .gui_elements.canvas import Canvas
-from .gui_elements.bars import Bar
-from app.static.colours import *
+from pygame import font, display, event, QUIT
 
+from app.static.colours import *
+from .elements import Button, DropMenu
 from .events import Events
+from .gui_elements.bars import Bar
+from .gui_elements.canvas import Canvas
 
 '''
 The stage module is responsible for "staging" the app/game and hence is usually
@@ -27,8 +27,6 @@ class Stage(Events):
         self.WINDOW_LENGTH, self.WINDOW_WIDTH = 1280, 720
         display.set_caption("Simply Paint")
         self.screen = display.set_mode((self.WINDOW_LENGTH, self.WINDOW_WIDTH))
-
-
 
         # Program gui element setup
         self.drop_menu = DropMenu(5, 5, 90, 630)
@@ -64,18 +62,15 @@ class Stage(Events):
                     Button.update_icon(self.group)
             else:
                 self.option = option
-        # print("option is ", self.option)
+        self.change_tool(self.option)
 
     def event_manager(self):
         # Refresh mouse information
         self.refresh_mouse()
-
         self.canvas.update_canvas(self.screen)
-
-        self.draw_on_canvas()
+        self.draw_on_canvas(self.screen)
 
         # Refresh canvas information
-
         self.canvas.store_canvas()
 
         # Button event
@@ -97,7 +92,7 @@ class Stage(Events):
             self.event_manager()
 
             # --------------------------
-            #time.delay(16)
+            # time.delay(16)
             display.flip()
         font.quit()
         quit()

@@ -1,6 +1,6 @@
 import abc
-from abc import ABC, abstractmethod
-from math import ceil, sqrt
+from abc import ABC
+from math import sqrt
 
 
 class Tool(ABC):
@@ -43,3 +43,6 @@ class Tool(ABC):
         :return: void
         """
         print('active internal')
+
+
+

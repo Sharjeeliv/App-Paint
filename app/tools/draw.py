@@ -1,5 +1,6 @@
-from .tools import Tool
 from pygame import draw
+
+from .tools import Tool
 
 
 class Pencil(Tool):
@@ -13,3 +14,13 @@ class Pencil(Tool):
         path = self.calculate_path(mouse_cords, prev_mouse_cords, self.TEMP_SIZE)
         for position in path:
             draw.circle(canvas, self.BLACK, position, 10)
+
+
+class Marker(Tool):
+    def draw_to_screen(self, canvas, mouse_cords, prev_mouse_cords):
+        pass
+
+
+class FountainPen(Tool):
+    def draw_to_screen(self, canvas, mouse_cords, prev_mouse_cords):
+        pass

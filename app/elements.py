@@ -1,7 +1,8 @@
 from pygame import draw, Rect
+
 import app.static as static
-from app.gui_elements import button as btn
 import app.static.colours as colours
+from app.gui_elements import button as btn
 
 
 class Button(btn.Button):
