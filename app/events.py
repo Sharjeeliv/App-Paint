@@ -45,16 +45,21 @@ class Events:
     def button_element_click(self):
         pass
 
-    def draw_on_canvas(self, screen):
-        if self.primary_mouse_click() and self.canvas.on_canvas(self.mouse_cords) and self.group != 'option':
-            self.current_tool.draw_to_screen(screen, self.mouse_cords, self.prev_mouse_cords)
+    def is_valid_option(self):
+        return self.group != 'option' and self.option is not None
+
+    def draw_on_canvas(self):
+        # All tools will be based on coordinates, so we update it in the parent class resulting in fewer child params
+        self.current_tool.update_internal_variables(self.mouse_cords, self.prev_mouse_cords,
+                                                    self.canvas.get_parent_offset)
+        # Validation is handled outside the particular tool function to reduce clutter
+        if self.primary_mouse_click() and self.canvas.on_canvas(self.mouse_cords) and self.is_valid_option():
+            self.current_tool.draw_to_screen(self.canvas, self.mouse_cords, self.prev_mouse_cords, 10, (0, 0, 0))
 
     def change_tool(self, option):
-        if option is None:
+        if option is None or TOOLS.get(option) is None:
             return
         elif option is not None and "stamp" in option:
             self.current_tool = TOOLS.get('stamps')
         else:
             self.current_tool = TOOLS.get(option)
-
-

@@ -1,7 +1,7 @@
 from pygame import font, display, event, QUIT
 
 from app.static.colours import *
-from .elements import Button, DropMenu
+from .app_elements import Button, DropMenu
 from .events import Events
 from .gui_elements.bars import Bar
 from .gui_elements.canvas import Canvas
@@ -68,7 +68,8 @@ class Stage(Events):
         # Refresh mouse information
         self.refresh_mouse()
         self.canvas.update_canvas(self.screen)
-        self.draw_on_canvas(self.screen)
+        print(f"mouse point actual: {self.mouse_cords}")
+        self.draw_on_canvas()
 
         # Refresh canvas information
         self.canvas.store_canvas()
@@ -92,7 +93,7 @@ class Stage(Events):
             self.event_manager()
 
             # --------------------------
-            # time.delay(16)
+            #time.delay(16)
             display.flip()
         font.quit()
         quit()

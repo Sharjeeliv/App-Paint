@@ -1,4 +1,4 @@
-from app.elements import Button
+from app.app_elements import Button
 from app.static import *
 
 Button("option:general", DRAW, 10, 10)
