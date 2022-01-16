@@ -33,8 +33,6 @@ class Events:
     run_program = True
     current_tool = TOOLS.get('pencil')
 
-    #def __init__(self):
-
     @classmethod
     def refresh_mouse(self):
         self.prev_mouse_cords = self.mouse_cords
