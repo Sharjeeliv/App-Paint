@@ -49,7 +49,8 @@ class Stage:
                 if Events.option == "option":
                     Events.option = None
 
-    def update_group_and_option(self, input_package):
+    @staticmethod
+    def update_group_and_option(input_package):
         if input_package is not None:
             input_option = input_package.split(":")
             group = input_option[0]
@@ -68,7 +69,6 @@ class Stage:
         # Refresh mouse information
         Events.refresh_mouse()
         Events.canvas.update_canvas(self.screen)
-        print(f"mouse point actual: {Events.mouse_cords}")
         Events.draw_on_canvas()
 
         # Refresh canvas information
@@ -93,7 +93,7 @@ class Stage:
             self.event_manager()
 
             # --------------------------
-            #time.delay(16)
+            # time.delay(16)
             display.flip()
         font.quit()
         quit()

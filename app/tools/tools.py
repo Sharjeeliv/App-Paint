@@ -33,18 +33,21 @@ class Tool(ABC):
     def calculate_path(cls, size) -> (int, int):
         distance_x, distance_y = cls.calculate_distance()
         distance = int(sqrt((distance_x ** 2) + (distance_y ** 2)))
-        generated_path = cls.generate_path_cords(distance, distance_x, distance_y, size)
+        generated_path = cls._generate_path_cords(distance, distance_x, distance_y, size)
         return generated_path
 
     @classmethod  # Generator
-    def generate_path_cords(cls, distance, distance_x, distance_y, size):
+    def _generate_path_cords(cls, distance, distance_x, distance_y, size):
         for i in range(distance):
-            print(size, " is size")
             position_x = (cls.prev_mouse_x + round(((i / distance) * distance_x))) - round(size / 2)
             position_y = (cls.prev_mouse_y + round(((i / distance) * distance_y))) - round(size / 2)
             yield position_x, position_y
 
-    @abc.abstractmethod
+    @classmethod
+    def same_position(cls):
+        return cls.mouse_x == cls.prev_mouse_x and cls.mouse_y == cls.prev_mouse_y
+
+    @abc.abstractmethod # Used to implement state pattern
     def draw_to_screen(self, canvas, size, colour, opacity, variant=0):
         """
         This method takes in the canvas and will draw the final 'object' to the screen.

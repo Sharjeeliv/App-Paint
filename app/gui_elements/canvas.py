@@ -1,6 +1,6 @@
 # Memento Patter: Originator
 
-from pygame import Rect
+from pygame import Rect, SRCALPHA
 
 WHITE = (255, 255, 255)
 
