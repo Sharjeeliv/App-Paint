@@ -39,6 +39,7 @@ class Tool(ABC):
     @classmethod  # Generator
     def generate_path_cords(cls, distance, distance_x, distance_y, size):
         for i in range(distance):
+            print(size, " is size")
             position_x = (cls.prev_mouse_x + round(((i / distance) * distance_x))) - round(size / 2)
             position_y = (cls.prev_mouse_y + round(((i / distance) * distance_y))) - round(size / 2)
             yield position_x, position_y

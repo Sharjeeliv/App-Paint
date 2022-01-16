@@ -13,5 +13,5 @@ class Eraser(Tool):
 
 
 class Clear(Tool):
-    def draw_to_screen(self, canvas, mouse_cords, prev_mouse_cords, size, colour, opacity=0, variant=0):
+    def draw_to_screen(self, canvas, size, colour, opacity=0, variant=0):
         canvas.get_surface.fill(WHITE)  # We fill the area (10, 110, 1200, 610)

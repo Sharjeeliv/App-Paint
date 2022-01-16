@@ -17,7 +17,7 @@ It inherits from the events class as the stage of the game depends on the events
 """
 
 
-class Stage(Events):
+class Stage:
     PRIMARY = 0
 
     def __init__(self):
@@ -32,8 +32,8 @@ class Stage(Events):
         self.drop_menu = DropMenu(5, 5, 90, 630)
         self.top_bar = Bar(self.WINDOW_LENGTH, 100)
         self.side_bar = Bar(100, self.WINDOW_WIDTH, self.WINDOW_LENGTH - 60)
-        self.canvas = Canvas(self.screen, 10, 110, self.WINDOW_LENGTH - 80, self.WINDOW_WIDTH - 110)
-        self.canvas.store_canvas()
+        Events.canvas = Canvas(self.screen, 10, 110, self.WINDOW_LENGTH - 80, self.WINDOW_WIDTH - 110)
+        Events.canvas.store_canvas()
 
     def static_layout(self):
         self.screen.fill(DARK_GREY)  # Program background
@@ -41,13 +41,13 @@ class Stage(Events):
         self.side_bar.draw_bar(self.screen)
 
     def dynamic_layout(self):  # This manages the option dropdown refresh
-        if self.option is not None:
-            if self.option == "option" and self.drop_menu.draw_menu_collision(self.mouse_cords):
-                temp = self.drop_menu.draw_drop_menu(self.screen, self.mouse_cords, self.mouse_button)
+        if Events.option is not None:
+            if Events.option == "option" and self.drop_menu.draw_menu_collision(Events.mouse_cords):
+                temp = self.drop_menu.draw_drop_menu(self.screen, Events.mouse_cords, Events.mouse_button)
                 self.update_group_and_option(temp)
-            elif not self.drop_menu.draw_menu_collision(self.mouse_cords):
-                if self.option == "option":
-                    self.option = None
+            elif not self.drop_menu.draw_menu_collision(Events.mouse_cords):
+                if Events.option == "option":
+                    Events.option = None
 
     def update_group_and_option(self, input_package):
         if input_package is not None:
@@ -56,38 +56,38 @@ class Stage(Events):
             option = input_option[1]
 
             if group == "option":
-                self.group = option
-                self.option = group  # The tool we use is the option
+                Events.group = option
+                Events.option = group  # The tool we use is the option
                 if option != "option":
-                    Button.update_icon(self.group)
+                    Button.update_icon(Events.group)
             else:
-                self.option = option
-        self.change_tool(self.option)
+                Events.option = option
+        Events.change_tool(Events.option)
 
     def event_manager(self):
         # Refresh mouse information
-        self.refresh_mouse()
-        self.canvas.update_canvas(self.screen)
-        print(f"mouse point actual: {self.mouse_cords}")
-        self.draw_on_canvas()
+        Events.refresh_mouse()
+        Events.canvas.update_canvas(self.screen)
+        print(f"mouse point actual: {Events.mouse_cords}")
+        Events.draw_on_canvas()
 
         # Refresh canvas information
-        self.canvas.store_canvas()
+        Events.canvas.store_canvas()
 
         # Button event
-        received_package = Button.manager(self.screen, self.group, self.mouse_cords, self.mouse_button)
+        received_package = Button.manager(self.screen, Events.group, Events.mouse_cords, Events.mouse_button)
         self.update_group_and_option(received_package)
 
         self.dynamic_layout()
 
         for evt in event.get():
             if evt.type == QUIT:
-                self.run_program = False
+                Events.run_program = False
 
         # Event interruptions
 
     def run(self):
-        while self.run_program:
+        while Events.run_program:
             # --------------------------
             self.static_layout()
             self.event_manager()

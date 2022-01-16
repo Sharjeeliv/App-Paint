@@ -4,26 +4,24 @@ from .tools import Tool
 
 
 class Pencil(Tool):
-
-    def draw_to_screen(self, canvas, mouse_cords, prev_mouse_cords, size, colour, opacity=0, variant=0):
+    def draw_to_screen(self, canvas, size, colour, opacity=0, variant=0):
         path = self.calculate_path(size)
         for position in path:
-            print(f"mouse point: {mouse_cords}")
             draw.circle(canvas.get_surface, colour, position, 10)
 
 
 class Marker(Tool):
-    def draw_to_screen(self, canvas, mouse_cords, prev_mouse_cords, size, colour, opacity=0, variant=0):
+    def draw_to_screen(self, canvas, size, colour, opacity=0, variant=0):
         path = self.calculate_path(size)
         for position in path:
             marker_head = Surface((100, 100), SRCALPHA)
             position_x, position_y = position
             draw.rect(marker_head, (255, 0, 0, 255), (size, size, -size, -size))
-            canvas.blit(marker_head, (position_x, position_y))
+            canvas.get_surface.blit(marker_head, (position_x, position_y))
 
 
 class FountainPen(Tool):
-    def draw_to_screen(self, canvas, mouse_cords, prev_mouse_cords, size, colour, opacity=0, variant=0):
+    def draw_to_screen(self, canvas, size, colour, opacity=0, variant=0):
 
         pen_size, pen_stroke = size, 0
         while pen_size != 0:
