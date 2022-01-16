@@ -1,8 +1,10 @@
 from pygame import Rect, draw
-from . import LIGHT_GREY
+
+LIGHT_GREY = (220, 220, 220)
 
 
 class Bar:  # Can be used as a nav bar or a sidebar
+
     def __init__(self, length, width, x=0, y=0):
         self.bar = Rect(x, y, length, width)
 

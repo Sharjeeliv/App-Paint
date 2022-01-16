@@ -1,9 +1,10 @@
-from pygame import font, display, mouse, time, event, QUIT
+from pygame import font, display, time, event, QUIT
 from .elements import Button, DropMenu
-from .graphic_elements.canvas import Canvas
-from .graphic_elements.bars import Bar
-from .colours import *
-from .tools import *
+from .gui_elements.canvas import Canvas
+from .gui_elements.bars import Bar
+from app.static.colours import *
+
+from .events import Events
 
 '''
 The stage module is responsible for "staging" the app/game and hence is usually
@@ -11,51 +12,42 @@ present in all programs. It's primary responsibilities are to control the flow (
 and layout the gui (set the stage).
 '''
 
+"""
+It inherits from the events class as the stage of the game depends on the events.
+"""
 
-class Stage:
-    _state = pencil.Pencil()
+
+class Stage(Events):
+    PRIMARY = 0
 
     def __init__(self):
-        # Initialize variables
-        self.mouse_x, self.mouse_y, self.mouse_b = 0, 0, 0
-        self.prev_mouse_x, self.prev_mouse_y = 0, 0
+        super().__init__()
+
+        # Initialize display and screen variables
         self.WINDOW_LENGTH, self.WINDOW_WIDTH = 1280, 720
-        self.run_program = True
-
-        # Program state variables
-        self.group, self.option, self.canvas = "draw", None, None
-
-        # Initialize font
-        font.init()
-        self.program_font = font.SysFont("courier", 12)
-
-        # Initialize screen
         display.set_caption("Simply Paint")
         self.screen = display.set_mode((self.WINDOW_LENGTH, self.WINDOW_WIDTH))
 
-        # Program setup
-        self.drop_menu = DropMenu(5, 5, 90, 630)
 
-        self.static_layout()
+
+        # Program gui element setup
+        self.drop_menu = DropMenu(5, 5, 90, 630)
+        self.top_bar = Bar(self.WINDOW_LENGTH, 100)
+        self.side_bar = Bar(100, self.WINDOW_WIDTH, self.WINDOW_LENGTH - 60)
         self.canvas = Canvas(self.screen, 10, 110, self.WINDOW_LENGTH - 80, self.WINDOW_WIDTH - 110)
         self.canvas.store_canvas()
 
-    def static_layout(self):  # Used for init as well
-        # Back screen & Canvas
-        self.screen.fill(DARK_GREY)
-
-        # Bar Elements
-        top_bar = Bar(self.WINDOW_LENGTH, 100)
-        top_bar.draw_bar(self.screen)
-        side_bar = Bar(100, self.WINDOW_WIDTH, self.WINDOW_LENGTH - 60)
-        side_bar.draw_bar(self.screen)
+    def static_layout(self):
+        self.screen.fill(DARK_GREY)  # Program background
+        self.top_bar.draw_bar(self.screen)
+        self.side_bar.draw_bar(self.screen)
 
     def dynamic_layout(self):  # This manages the option dropdown refresh
         if self.option is not None:
-            if self.option == "option" and self.drop_menu.draw_menu_collision(self.mouse_x, self.mouse_y):
-                temp = self.drop_menu.draw_drop_menu(self.screen, self.mouse_x, self.mouse_y, self.mouse_b)
+            if self.option == "option" and self.drop_menu.draw_menu_collision(self.mouse_cords):
+                temp = self.drop_menu.draw_drop_menu(self.screen, self.mouse_cords, self.mouse_button)
                 self.update_group_and_option(temp)
-            elif not self.drop_menu.draw_menu_collision(self.mouse_x, self.mouse_y):
+            elif not self.drop_menu.draw_menu_collision(self.mouse_cords):
                 if self.option == "option":
                     self.option = None
 
@@ -76,29 +68,27 @@ class Stage:
 
     def event_manager(self):
         # Refresh mouse information
-        self.prev_mouse_x, self.prev_mouse_y = self.mouse_x, self.mouse_y
-        self.mouse_x, self.mouse_y = mouse.get_pos()
-        self.mouse_b = mouse.get_pressed()
+        self.refresh_mouse()
 
         self.canvas.update_canvas(self.screen)
-        if self.mouse_b[0] == 1 and self.canvas.on_canvas((self.mouse_x, self.mouse_y)):
-            print('active buttons')
-            self._state.draw_to_screen(self.screen, self.mouse_x, self.mouse_y, self.prev_mouse_x, self.prev_mouse_y)
+
+        self.draw_on_canvas()
 
         # Refresh canvas information
 
         self.canvas.store_canvas()
 
         # Button event
-        received_package = Button.manager(self.screen, self.group, self.mouse_x, self.mouse_y, self.mouse_b)
+        received_package = Button.manager(self.screen, self.group, self.mouse_cords, self.mouse_button)
         self.update_group_and_option(received_package)
 
         self.dynamic_layout()
 
-        # Event interruptions
         for evt in event.get():
             if evt.type == QUIT:
                 self.run_program = False
+
+        # Event interruptions
 
     def run(self):
         while self.run_program:
@@ -107,8 +97,7 @@ class Stage:
             self.event_manager()
 
             # --------------------------
-            # time.delay(16)
+            #time.delay(16)
             display.flip()
         font.quit()
-        del self.program_font
         quit()
