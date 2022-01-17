@@ -1,5 +1,6 @@
 from pygame import mouse
 
+from .options.colour import Colour
 from .tools import *
 
 PRIMARY = 0
@@ -23,12 +24,13 @@ class Events:
     """
     Events is a superclass to stage because the stage is set based on what events are happening
     """
+    variant = 0
     prev_mouse_cords = 0, 0
     mouse_cords = 0, 0
     mouse_button = None  # Button data is received as an array, so it is kept separate for simplicity
 
     # Program state variables
-    group, option, canvas = "draw", None, None
+    group, option, canvas, screen = "draw", None, None, None
     run_program = True
     current_tool = TOOLS.get('pencil')
 
@@ -54,19 +56,25 @@ class Events:
     def draw_on_canvas(cls):
         if cls.canvas is None:
             return
+
         # All tools will be based on coordinates, so we update it in the parent class resulting in fewer child params
         cls.current_tool.update_internal_variables(cls.mouse_cords, cls.prev_mouse_cords,
                                                    cls.canvas.get_parent_offset)
         # Validation is handled outside the particular tool function to reduce clutter
         if cls.primary_mouse_click() and cls.canvas.on_canvas(cls.mouse_cords) and cls.is_valid_option():
-            print(type(cls.current_tool) is Stamps)
-            cls.current_tool.draw_to_screen(cls.canvas, 50, (0, 0, 0))
+            cls.current_tool.draw_to_screen(cls.canvas, 50, (0, 0, 0), 0, cls.variant)  # Dummy inputs
 
     @classmethod
-    def change_tool(cls, option):
-        if option is None or TOOLS.get(option) is None:
+    def change_tool(cls):
+        # print("CALLED WITH THIS OPTION: ", option)
+        if cls.option is None:
             return
-        elif option is not None and "stamp" in option:
+        elif "stamp" in cls.option:
+            cls.variant = cls.option
             cls.current_tool = TOOLS.get('stamps')
-        else:
-            cls.current_tool = TOOLS.get(option)
+        elif TOOLS.get(cls.option) is not None:
+            cls.current_tool = TOOLS.get(cls.option)
+
+    @classmethod  # Work in progress
+    def options_interface(cls):
+        Colour.draw_interface(cls.screen)

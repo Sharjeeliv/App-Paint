@@ -27,6 +27,7 @@ class Stage:
         self.WINDOW_LENGTH, self.WINDOW_WIDTH = 1280, 720
         display.set_caption("Simply Paint")
         self.screen = display.set_mode((self.WINDOW_LENGTH, self.WINDOW_WIDTH))
+        Events.screen = self.screen  # Update screen stored in that class
 
         # Program gui element setup
         self.drop_menu = DropMenu(5, 5, 90, 630)
@@ -34,6 +35,10 @@ class Stage:
         self.side_bar = Bar(100, self.WINDOW_WIDTH, self.WINDOW_LENGTH - 60)
         Events.canvas = Canvas(self.screen, 10, 110, self.WINDOW_LENGTH - 80, self.WINDOW_WIDTH - 110)
         Events.canvas.store_canvas()
+
+    @property
+    def get_screen(self):
+        return self.screen
 
     def static_layout(self):
         self.screen.fill(DARK_GREY)  # Program background
@@ -63,7 +68,7 @@ class Stage:
                     Button.update_icon(Events.group)
             else:
                 Events.option = option
-        Events.change_tool(Events.option)
+        Events.change_tool()
 
     def event_manager(self):
         # Refresh mouse information

@@ -22,7 +22,8 @@ Button("stamps:stamp_1", STAMP_1, 100, 10)
 Button("stamps:stamp_2", STAMP_2, 190, 10)
 Button("stamps:stamp_3", STAMP_3, 280, 10)
 Button("stamps:stamp_4", STAMP_4, 370, 10)
-Button("stamps:stamp_6", STAMP_6, 460, 10)
+Button("stamps:stamp_5", STAMP_5, 460, 10)
+Button("stamps:stamp_6", STAMP_6, 550, 10)
 
 Button("settings:exit", EXIT, 100, 10)
 

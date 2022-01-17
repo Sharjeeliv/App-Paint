@@ -18,10 +18,10 @@ class Button(btn.Button):
     def update_icon(cls, icon):
         for button in cls._buttons:
             name = getattr(button, 'name')
-            print(f"temp is {name}")
+            #print(f"temp is {name}")
             if name == "option:general" and icon != "general":
                 temp = str(icon).upper()
-                print(f"temp is {temp}")
+                #print(f"temp is {temp}")
                 temp = getattr(static, temp)
                 setattr(button, "icon", temp)
 
